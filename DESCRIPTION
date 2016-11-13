@@ -7,6 +7,6 @@ Author: Steven Phillips
 Maintainer: Steven Phillips <mrmaxent@gmail.com>
 Imports:
     glmnet
-Description: An implementation in R of the 'Maxent' method for modeling species distributions from occurrence records, using 'glmnet' for model fitting. It implements the same feature types and regularization options as the 'Maxent' Java package.  See the 'Maxent' website for more details.
+Description: An implementation in R of the 'Maxent' method for modeling species distributions from occurrence records, using 'glmnet' for model fitting. It implements the same feature types and regularization options as the 'Maxent' Java package, version 3.4.0.  See the 'Maxent' website for more details.
 License: MIT + file LICENSE
 RoxygenNote: 5.0.1

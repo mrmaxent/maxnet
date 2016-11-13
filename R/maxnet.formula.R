@@ -9,7 +9,7 @@ function(p, data, classes="default")
       if (np < 10) classes <- "l"
       else if (np < 15) classes <- "lq"
       else if (np < 80) classes <- "lqh"
-      else classes <- "lqpht"
+      else classes <- "lqph"
    }
    terms <- NULL
    if (length(cont)) {
