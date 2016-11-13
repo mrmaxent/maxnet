@@ -4,7 +4,9 @@
 * win-builder (devel and release)
 
 ## R CMD check results
-There were no ERRORs or WARNINGs or NOTEs.
+There were no ERRORs or WARNINGs.
+
+Two NOTEs are due to the example code running a bit long (about 15 seconds)
 
 ## Downstream dependencies
 There are none.
