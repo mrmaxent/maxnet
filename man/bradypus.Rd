@@ -4,13 +4,13 @@
 \name{bradypus}
 \alias{bradypus}
 \title{Occurrence records and background data for the brown-throated three-toed sloth, Bradypus variegatus}
-\format{An object of class \code{data.frame} with 10116 rows and 15 columns.}
+\format{An object of class \code{data.frame} with 1116 rows and 15 columns.}
 \usage{
 bradypus
 }
 \description{
 A dataset containing environmental data at 116 Bradypus variegatus occurrence points
-and 10000 background points in South and Central America.  Occurrence data are from
+and 1000 background points in South and Central America.  Occurrence data are from
 Anderson and Handley (2001); see Phillips et al. (2006) for descriptions of the 
 predictor variables.
 }
