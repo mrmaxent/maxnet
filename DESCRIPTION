@@ -1,8 +1,8 @@
 Package: maxnet
 Type: Package
-Title: An implementation of Maxent using glmnet
+Title: An Implementation of Maxent using glmnet
 Version: 0.1.0
-Date: 2013-06-06
+Date: 2016-11-12
 Author: Steven Phillips
 Maintainer: Steven Phillips <mrmaxent@gmail.com>
 Imports:
