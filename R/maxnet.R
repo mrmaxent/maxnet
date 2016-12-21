@@ -13,7 +13,7 @@ function(p, data, f=maxnet.formula(p, data), regmult=1.0,
    bb <- model$beta[,100]
    model$betas <- bb[bb!=0]
    model$alpha <- 0
-   rr <- predict.maxnet(model, data[p==0,], type="exponent", clamp=F)
+   rr <- predict.maxnet(model, data[p==0, , drop = FALSE], type="exponent", clamp=F)
    raw <- rr / sum(rr)
    model$entropy <- -sum(raw * log(raw))
    model$alpha <- -log(sum(rr))
