@@ -21,11 +21,11 @@ function(p, data, f=maxnet.formula(p, data), regmult=1.0,
    model$featuremins <- apply(mm, 2, min)
    model$featuremaxs <- apply(mm, 2, max)
    vv <- (sapply(data, class)!="factor")
-   model$varmin <- apply(data[,vv], 2, min)
-   model$varmax <- apply(data[,vv], 2, max)
-   means <- apply(data[p==1,vv], 2, mean)
+   model$varmin <- apply(data[,vv, drop = FALSE], 2, min)
+   model$varmax <- apply(data[,vv, drop = FALSE], 2, max)
+   means <- apply(data[p==1,vv, drop = FALSE], 2, mean)
    majorities <- sapply(names(data)[!vv], 
-      function(n) which.max(table(data[p==1,n])))
+      function(n) which.max(table(data[p==1,n, drop = FALSE])))
    names(majorities) <- names(data)[!vv]
    model$samplemeans <- c(means, majorities)
    model$levels <- lapply(data, levels)
