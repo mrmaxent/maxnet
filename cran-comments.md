@@ -9,4 +9,6 @@ There were no ERRORs or WARNINGs or NOTEs
 ## Downstream dependencies
 There are none.
 
-The http link given in the DESCRIPTION field does not yet exist.  I am timing the release of this package to coincide with the announcement a new host site (pointed to by the http link) for the 'Maxent' Java package.  The new website is still under construction.
+The http link given in the DESCRIPTION field does not yet exist.  I am timing the release of this package to coincide with the announcement a new host site (pointed to by the http link) for the 'Maxent' Java package.  The new website is still under construction.  A temporary version is at http://biodiversityinformatics.amnh.org/open_source/maxent_preview/.  
+
+The currently release fixes a small bug and adds a link to github in the DESCRIPTION file.
