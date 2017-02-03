@@ -2,7 +2,7 @@ Package: maxnet
 Type: Package
 Title: Fitting 'Maxent' Species Distribution Models with 'glmnet'
 Version: 0.1.1
-Date: 2016-11-12
+Date: 2017-02-03
 Author: Steven Phillips
 Maintainer: Steven Phillips <mrmaxent@gmail.com>
 Imports:
