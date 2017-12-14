@@ -16,5 +16,5 @@ function(mod, v, type, mm=mod$samplemeans, min=mod$varmin[v], max=mod$varmax[v],
          graphics::barplot(as.vector(preds), names.arg=levels, xlab=v, ylab=ylab, ylim=ylim)
       }
    }
-   else return(preds)
+   else return(setNames(data.frame(m[, v], preds), c(v, 'pred')))
 }
