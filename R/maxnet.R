@@ -4,6 +4,7 @@ maxnet <-
 function(p, data, f=maxnet.formula(p, data), regmult=1.0, 
          regfun=maxnet.default.regularization, ...)
 {
+   if (anyNA(data)) stop("NA values in data table. Please remove them and rerun.")
    mm <- model.matrix(f, data)
    reg <- regfun(p,mm) * regmult
    weights <- p+(1-p)*100
