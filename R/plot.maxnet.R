@@ -9,7 +9,7 @@ function(x, vars=names(x$samplemeans), common.scale=T, type=c("link","exponentia
    ylim=NULL
    if (common.scale && (type=="link" || type=="exponential")) {
 vals <- do.call(c, lapply(vars, function(v) 
-          response.plot(x, v, type, plot=F)[,)$pred)
+          response.plot(x, v, type, plot=F)$pred))
         ylim=c(min(vals), max(vals))
    }
    if (type=="cloglog" || type=="logistic") ylim=c(0,1)
