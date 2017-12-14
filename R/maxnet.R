@@ -28,7 +28,7 @@ function(p, data, f=maxnet.formula(p, data), regmult=1.0,
    majorities <- sapply(names(data)[!vv], 
       function(n) which.max(table(data[p==1,n, drop = FALSE])))
    names(majorities) <- names(data)[!vv]
-   model$samplemeans <- c(means, majorities)
+   model$samplemeans <- unlist(c(means, majorities))
    model$levels <- lapply(data, levels)
    model
 }
