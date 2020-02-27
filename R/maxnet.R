@@ -11,7 +11,7 @@ function(p, data, f=maxnet.formula(p, data), regmult=1.0,
        # add to the background any presence data that isn't already in the background
        toadd <- apply(pdata, 1, function(rr) !any(apply(ndata, 1, function(r) identical(r, rr))))
        p <- c(p, rep(0, sum(toadd)))
-       data <- rbind(data, pdata[toadd])
+       data <- rbind(data, pdata[toadd,])
    }   
    mm <- model.matrix(f, data)
    reg <- regfun(p,mm) * regmult
