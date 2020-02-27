@@ -21,6 +21,7 @@ maxnet.default.regularization(p, m)
   \item{f}{ a formula to determine the features to be used. }
   \item{regmult}{ a constant to adjust regularization. }
   \item{regfun}{ a function to compute regularization constant for each feature. }
+  \item{addsamplestobackground}{ if T, add to the background any presence sample that is not already there. }
   \item{object}{ an object of class \code{"maxnet"}, i.e., a fitted model. }
   \item{newdata}{ values of predictor variables to predict to. }
   \item{m}{ a matrix of feature values. }
