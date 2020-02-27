@@ -9,7 +9,7 @@ Maxent species distribution modeling using glmnet for model fitting
 }
 \usage{
 maxnet(p, data, f = maxnet.formula(p, data), regmult = 1, 
-   regfun = maxnet.default.regularization, ...)
+   regfun = maxnet.default.regularization, addsamplestodata=F, ...)
 maxnet.default.regularization(p, m)
 
 \method{predict}{maxnet}(object, newdata, clamp=T, type=c("link","exponential","cloglog","logistic"), ...)
