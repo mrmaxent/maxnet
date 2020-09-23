@@ -9,5 +9,4 @@
 #' Anderson, R. P. and Handley, Jr., C. O. (2001). A new species of three-toed sloth (Mammalia: Xenarthra) from Panama, with a review of the genus Bradypus. Proceedings of the Biological Society of Washington 114, 1-33.
 #'
 #' Phillips, S. J. et al. (2006). Maximum entropy modeling of species geographic distributions. Ecological Modelling 190, 231-259
-#' @usage data(bradypus)
 "bradypus"
