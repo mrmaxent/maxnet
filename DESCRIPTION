@@ -11,3 +11,4 @@ Description: Procedures to fit species distributions models from occurrence reco
 License: MIT + file LICENSE
 URL: https://github.com/mrmaxent/maxnet
 RoxygenNote: 5.0.1
+LazyData: true
