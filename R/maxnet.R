@@ -2,7 +2,7 @@
 #' @export
 maxnet <-
 function(p, data, f=maxnet.formula(p, data), regmult=1.0, 
-         regfun=maxnet.default.regularization, addsamplestobackground=F, ...)
+         regfun=maxnet.default.regularization, addsamplestobackground=T, ...)
 {
    if (anyNA(data)) stop("NA values in data table. Please remove them and rerun.")
    if (addsamplestobackground) {
