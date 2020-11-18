@@ -9,7 +9,6 @@ Maxent species distribution modeling using glmnet for model fitting
 \tabular{ll}{
 Package: \tab maxnet\cr
 Type: \tab Package\cr
-Version: \tab 0.1\cr
 Date: \tab 2013-06-06\cr
 License: \tab To be determined\cr
 }
