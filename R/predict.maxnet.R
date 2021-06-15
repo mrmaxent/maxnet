@@ -8,7 +8,7 @@ function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logist
       }
    }
    terms <- sub("hinge\\((.*)\\):(.*):(.*)$", "hingeval(\\1,\\2,\\3)", names(object$betas))
-   terms <- sub("categorical\\((.*)\\):(.*)$", "categoricalval(\\1,\\2)", terms)
+   terms <- sub("categorical\\((.*)\\):(.*)$", "categoricalval(\\1,\"\\2\")", terms)
    terms <- sub("thresholds\\((.*)\\):(.*)$", "thresholdval(\\1,\\2)", terms)
    f <- formula(paste("~", paste(terms, collapse=" + "), "-1"))
    mm <- model.matrix(f, data.frame(newdata))
