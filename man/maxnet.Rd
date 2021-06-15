@@ -11,9 +11,9 @@ Maxent species distribution modeling using glmnet for model fitting
 maxnet(p, data, f = maxnet.formula(p, data), regmult = 1, 
    regfun = maxnet.default.regularization, addsamplestobackground=T, ...)
 maxnet.default.regularization(p, m)
+maxnet.formula(p, data, classes="default")
 
 \method{predict}{maxnet}(object, newdata, clamp=T, type=c("link","exponential","cloglog","logistic"), ...)
-\method{maxnet}{formula}(p, data, classes="default")
 }
 \arguments{
   \item{p}{ a vector of 1 (for presence) or 0 (for background). }
