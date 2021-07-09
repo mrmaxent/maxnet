@@ -1,3 +1,7 @@
 # maxnet 0.1.0
 
-This is a new package, so no changes to document yet.
+Two small changes in version 0.1.4:
+
+ addsamplestobackground is now true by default, which fixes convergence problems with some datasets
+ character levels for factors are now supported
+ 
