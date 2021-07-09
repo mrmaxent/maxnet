@@ -1,4 +1,4 @@
-# maxnet 0.1.0
+# maxnet 0.1.4
 
 Two small changes in version 0.1.4:
 
