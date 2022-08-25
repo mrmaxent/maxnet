@@ -1,6 +1,5 @@
 \name{maxnet}
 \alias{maxnet}
-\alias{predict.maxnet}
 \alias{maxnet.formula}
 \alias{maxnet.default.regularization}
 \title{Maxent over glmnet}
@@ -12,8 +11,6 @@ maxnet(p, data, f = maxnet.formula(p, data), regmult = 1,
    regfun = maxnet.default.regularization, addsamplestobackground=T, ...)
 maxnet.default.regularization(p, m)
 maxnet.formula(p, data, classes="default")
-
-\method{predict}{maxnet}(object, newdata, clamp=T, type=c("link","exponential","cloglog","logistic"), ...)
 }
 \arguments{
   \item{p}{ a vector of 1 (for presence) or 0 (for background). }
@@ -22,11 +19,7 @@ maxnet.formula(p, data, classes="default")
   \item{regmult}{ a constant to adjust regularization. }
   \item{regfun}{ a function to compute regularization constant for each feature. }
   \item{addsamplestobackground}{ if T, add to the background any presence sample that is not already there. }
-  \item{object}{ an object of class \code{"maxnet"}, i.e., a fitted model. }
-  \item{newdata}{ values of predictor variables to predict to. }
   \item{m}{ a matrix of feature values. }
-  \item{clamp}{ if true, predictors and features are restricted to the range seen during model training. }
-  \item{type}{ type of response required. }
   \item{classes}{ continuous feature classes desired, either "default" or any subset of "lqpht" (for example, "lh"). }
   \item{\dots}{ not used. }
 }

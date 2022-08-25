@@ -4,7 +4,9 @@
 \name{bradypus}
 \alias{bradypus}
 \title{Occurrence records and background data for the brown-throated three-toed sloth, Bradypus variegatus}
-\format{An object of class \code{data.frame} with 1116 rows and 15 columns.}
+\format{
+An object of class \code{data.frame} with 1116 rows and 15 columns.
+}
 \usage{
 bradypus
 }
@@ -20,4 +22,3 @@ Anderson, R. P. and Handley, Jr., C. O. (2001). A new species of three-toed slot
 Phillips, S. J. et al. (2006). Maximum entropy modeling of species geographic distributions. Ecological Modelling 190, 231-259
 }
 \keyword{datasets}
-
