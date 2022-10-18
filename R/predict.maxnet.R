@@ -1,9 +1,11 @@
 #' Predict using a maxnet model
 #' 
+#' Prediction can be on a spatial raster or vector space.
+#' 
 #' @export
 #' @param object an object of class "maxnet", i.e., a fitted model.
 #' @param newdata values of predictor variables to predict to, possibly
-#'   matrix, data.frame or \code{stars} object
+#'   matrix, data.frame, \code{SpatRaster} or \code{stars} object
 #' @param clamp logical, f true, predictors and features are restricted to the range seen during model training.
 #' @param type character, type of response required. Using \code{lp} for the linear predictor 
 #' and \code{entropy} for the entropy of the exponential model over the background data, 
@@ -15,7 +17,7 @@
 #'   \item{"logistic"}{yields \code{1/(1+exp(-entropy-lp))}}
 #' }
 #' @param ... not used
-#' @return vector with predicted values (one per input row) or \code{stars} object of predicted values
+#' @return vector with predicted values (one per input row), \code{SpatRaster} or \code{stars} object of predicted values
 predict.maxnet <-
 function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logistic"), ...)
 {
@@ -36,6 +38,22 @@ function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logist
      S$pred[] <- NA_real_
    }  
   
+   is_spatraster <- inherits(newdata, "SpatRaster")
+   if (is_spatraster){
+     if (!requireNamespace("terra", quietly = TRUE)) {
+       stop("package terra required, please install it first")
+     }
+     S <- newdata
+     newdata <- as.data.frame(S)
+     ix <- complete.cases(newdata)
+     newdata <- newdata[ix, , drop = FALSE]
+     # slice out just the first attribute - a copy,
+     # make all of it's values NA
+     S <- S[[1]]
+     names(S) <- "pred"
+     terra::setValues(S[[1]], NA_real_)
+   }  
+   
    if (clamp) {
       for (v in intersect(names(object$varmax), names(newdata))) {
          newdata[,v] <- pmin(pmax(newdata[,v], object$varmin[v]), object$varmax[v])
@@ -56,9 +74,14 @@ function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logist
      "logistic"= 1/(1+exp(-object$entropy-link)),
      link)
 
-   if (is_stars) {
+   if (is_stars){
      S$pred[ix] <- r 
      r <- S
    }
+   if (is_spatraster){
+     terra::setValues(S[[1]], r)
+     r <- S
+   }
+   
    return(r)
 }

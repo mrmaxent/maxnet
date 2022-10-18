@@ -16,7 +16,7 @@
 \item{object}{an object of class "maxnet", i.e., a fitted model.}
 
 \item{newdata}{values of predictor variables to predict to, possibly
-matrix, data.frame or \code{stars} object}
+matrix, data.frame, \code{SpatRaster} or \code{stars} object}
 
 \item{clamp}{logical, f true, predictors and features are restricted to the range seen during model training.}
 
@@ -33,8 +33,8 @@ the values returned are determined by the value of \code{type}.
 \item{...}{not used}
 }
 \value{
-vector with predicted values (one per input row) or \code{stars} object of predicted values
+vector with predicted values (one per input row), \code{SpatRaster} or \code{stars} object of predicted values
 }
 \description{
-Predict using a maxnet model
+Prediction can be on a spatial raster or vector space.
 }
