@@ -22,6 +22,8 @@ predict.maxnet <-
 function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logistic"), ...)
 {
    is_stars <- inherits(newdata, "stars")
+   is_spatraster <- inherits(newdata, "SpatRaster")
+   
    if (is_stars){
      if (!requireNamespace("stars", quietly = TRUE)) {
        stop("package stars required, please install it first")
@@ -29,29 +31,26 @@ function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logist
      S <- newdata
      newdata <- as.data.frame(S)
      newdata <- newdata[ , -c(1,2)] # drop x,y leading columns
-     ix <- complete.cases(newdata)
-     newdata <- newdata[ix, ]
+     ix <- which(complete.cases(newdata))
+     newdata <- newdata[ix, , drop = FALSE]
      # slice out just the first attribute - a copy,
      # make all of it's values NA
      S <- S[1]
      names(S) <- "pred"
      S$pred[] <- NA_real_
-   }  
-  
-   is_spatraster <- inherits(newdata, "SpatRaster")
-   if (is_spatraster){
+   } else if (is_spatraster){
      if (!requireNamespace("terra", quietly = TRUE)) {
        stop("package terra required, please install it first")
      }
      S <- newdata
-     newdata <- as.data.frame(S)
-     ix <- complete.cases(newdata)
+     newdata <- as.data.frame(S, na.rm = FALSE) # we will handle NAs externally
+     ix <- which(complete.cases(newdata))
      newdata <- newdata[ix, , drop = FALSE]
      # slice out just the first attribute - a copy,
      # make all of it's values NA
      S <- S[[1]]
      names(S) <- "pred"
-     terra::setValues(S[[1]], NA_real_)
+     terra::values(S) <-  rep(NA_real_, terra::ncell(S))
    }  
    
    if (clamp) {
@@ -77,9 +76,10 @@ function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logist
    if (is_stars){
      S$pred[ix] <- r 
      r <- S
-   }
-   if (is_spatraster){
-     terra::setValues(S[[1]], r)
+   } else if (is_spatraster){
+     r2 <- rep(NA_real_, terra::ncell(S))
+     r2[ix] <- r[,1,drop = TRUE]
+     terra::values(S) <- r2
      r <- S
    }
    
