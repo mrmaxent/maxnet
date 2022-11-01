@@ -16,14 +16,18 @@
 #'   \item{"cloglog"}{yields \code{1-exp(-exp(entropy+lp))}}
 #'   \item{"logistic"}{yields \code{1/(1+exp(-entropy-lp))}}
 #' }
+#' @param incompletes character, one of "ignore" or "fill".  If "fill" then predictions values for 
+#'  incomplete rows in \code{newdata} are filled with \code{NA}. If "ignore" then then predictions values for 
+#'  incomplete rows in \code{newdata} are silently dropped. Always assumed to be 
+#'  "fill" if \code{newdata} is a \code{SpatRaster} or \code{stars} object.
 #' @param ... not used
 #' @return vector with predicted values (one per input row), \code{SpatRaster} or \code{stars} object of predicted values
 predict.maxnet <-
-function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logistic"), ...)
+function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logistic"), incompletes = "ignore", ...)
 {
    is_stars <- inherits(newdata, "stars")
    is_spatraster <- inherits(newdata, "SpatRaster")
-   
+   do_complete <- tolower(incompletes[1]) == "fill"
    if (is_stars){
      if (!requireNamespace("stars", quietly = TRUE)) {
        stop("package stars required, please install it first")
@@ -51,7 +55,13 @@ function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logist
      S <- S[[1]]
      names(S) <- "pred"
      terra::values(S) <-  rep(NA_real_, terra::ncell(S))
-   }  
+   } else {
+     if (do_complete) {
+       N <- NROW(newdata)
+       ix <- complete.cases(newdata)
+       newdata <- newdata[ix, , drop = FALSE]
+     }
+   }
    
    if (clamp) {
       for (v in intersect(names(object$varmax), names(newdata))) {
@@ -81,6 +91,12 @@ function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logist
      r2[ix] <- r[,1,drop = TRUE]
      terra::values(S) <- r2
      r <- S
+   } else{
+     if (do_complete){
+       r2 <- rep(NA_real_, N)
+       r2[ix] <- r
+       r <- r2
+     }
    }
    
    return(r)

@@ -9,6 +9,7 @@
   newdata,
   clamp = T,
   type = c("link", "exponential", "cloglog", "logistic"),
+  incompletes = "ignore",
   ...
 )
 }
@@ -29,6 +30,11 @@ the values returned are determined by the value of \code{type}.
   \item{"cloglog"}{yields \code{1-exp(-exp(entropy+lp))}}
   \item{"logistic"}{yields \code{1/(1+exp(-entropy-lp))}}
 }}
+
+\item{incompletes}{character, one of "ignore" or "fill".  If "fill" then predictions values for 
+incomplete rows in \code{newdata} are filled with \code{NA}. If "ignore" then then predictions values for 
+incomplete rows in \code{newdata} are silently dropped. Always assumed to be 
+"fill" if \code{newdata} is a \code{SpatRaster} or \code{stars} object.}
 
 \item{...}{not used}
 }
