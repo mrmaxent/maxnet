@@ -9,7 +9,6 @@
   newdata,
   clamp = T,
   type = c("link", "exponential", "cloglog", "logistic"),
-  incompletes = "ignore",
   ...
 )
 }
@@ -17,7 +16,7 @@
 \item{object}{an object of class "maxnet", i.e., a fitted model.}
 
 \item{newdata}{values of predictor variables to predict to, possibly
-matrix, data.frame, \code{SpatRaster} or \code{stars} object}
+matrix, data.frame, \code{SpatRaster} or \code{stars} object.}
 
 \item{clamp}{logical, f true, predictors and features are restricted to the range seen during model training.}
 
@@ -30,11 +29,6 @@ the values returned are determined by the value of \code{type}.
 \item{"cloglog"}{yields \code{1-exp(-exp(entropy+lp))}}
 \item{"logistic"}{yields \code{1/(1+exp(-entropy-lp))}}
 }}
-
-\item{incompletes}{character, one of "ignore" or "fill".  If "fill" then predictions values for
-incomplete rows in \code{newdata} are filled with \code{NA}. If "ignore" then then predictions values for
-incomplete rows in \code{newdata} are silently dropped. Always assumed to be
-"fill" if \code{newdata} is a \code{SpatRaster} or \code{stars} object.}
 
 \item{...}{not used}
 }

@@ -5,7 +5,7 @@
 #' @export
 #' @param object an object of class "maxnet", i.e., a fitted model.
 #' @param newdata values of predictor variables to predict to, possibly
-#'   matrix, data.frame, \code{SpatRaster} or \code{stars} object
+#'   matrix, data.frame, \code{SpatRaster} or \code{stars} object. 
 #' @param clamp logical, f true, predictors and features are restricted to the range seen during model training.
 #' @param type character, type of response required. Using \code{lp} for the linear predictor 
 #' and \code{entropy} for the entropy of the exponential model over the background data, 
@@ -16,51 +16,41 @@
 #'   \item{"cloglog"}{yields \code{1-exp(-exp(entropy+lp))}}
 #'   \item{"logistic"}{yields \code{1/(1+exp(-entropy-lp))}}
 #' }
-#' @param incompletes character, one of "ignore" or "fill".  If "fill" then predictions values for 
-#'  incomplete rows in \code{newdata} are filled with \code{NA}. If "ignore" then then predictions values for 
-#'  incomplete rows in \code{newdata} are silently dropped. Always assumed to be 
-#'  "fill" if \code{newdata} is a \code{SpatRaster} or \code{stars} object.
 #' @param ... not used
 #' @return vector with predicted values (one per input row), \code{SpatRaster} or \code{stars} object of predicted values
 predict.maxnet <-
-function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logistic"), incompletes = "ignore", ...)
+function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logistic"), ...)
 {
+  
+   na_action <- options("na.action")[[1]]
+   on.exit(options(na.action = na_action))
+   options(na.action = "na.pass")
+   
    is_stars <- inherits(newdata, "stars")
+   if (is_stars && !requireNamespace("stars", quietly = TRUE)) {
+     stop("package stars required, please install it first")
+   }
    is_spatraster <- inherits(newdata, "SpatRaster")
-   do_complete <- tolower(incompletes[1]) == "fill"
-   if (is_stars){
-     if (!requireNamespace("stars", quietly = TRUE)) {
-       stop("package stars required, please install it first")
+   if (is_spatraster && !requireNamespace("terra", quietly = TRUE)) {
+     stop("package terra required, please install it first")
+   }
+   
+   is_raster <- is_stars || is_spatraster
+   
+   if (is_raster){
+     S <- if(is_stars){
+       newdata[1]
+     } else {
+       newdata[[1]]
      }
-     S <- newdata
-     newdata <- as.data.frame(S)
-     newdata <- newdata[ , -c(1,2)] # drop x,y leading columns
-     ix <- which(complete.cases(newdata))
-     newdata <- newdata[ix, , drop = FALSE]
-     # slice out just the first attribute - a copy,
-     # make all of it's values NA
-     S <- S[1]
      names(S) <- "pred"
-     S$pred[] <- NA_real_
-   } else if (is_spatraster){
-     if (!requireNamespace("terra", quietly = TRUE)) {
-       stop("package terra required, please install it first")
+     
+     newdata <- if (is_stars){
+       as.data.frame(newdata)[, -c(1,2)]
+     } else {
+       as.data.frame(newdata, na.rm = FALSE)
      }
-     S <- newdata
-     newdata <- as.data.frame(S, na.rm = FALSE) # we will handle NAs externally
-     ix <- which(complete.cases(newdata))
-     newdata <- newdata[ix, , drop = FALSE]
-     # slice out just the first attribute - a copy,
-     # make all of it's values NA
-     S <- S[[1]]
-     names(S) <- "pred"
-     terra::values(S) <-  rep(NA_real_, terra::ncell(S))
-   } else {
-     if (do_complete) {
-       N <- NROW(newdata)
-       ix <- complete.cases(newdata)
-       newdata <- newdata[ix, , drop = FALSE]
-     }
+     
    }
    
    if (clamp) {
@@ -83,21 +73,15 @@ function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logist
      "logistic"= 1/(1+exp(-object$entropy-link)),
      link)
 
-   if (is_stars){
-     S$pred[ix] <- r 
-     r <- S
-   } else if (is_spatraster){
-     r2 <- rep(NA_real_, terra::ncell(S))
-     r2[ix] <- r[,1,drop = TRUE]
-     terra::values(S) <- r2
-     r <- S
-   } else{
-     if (do_complete){
-       r2 <- rep(NA_real_, N)
-       r2[ix] <- r
-       r <- r2
+   if (is_raster){
+     r <- if(is_stars){
+      S$pred <- r
+      S
+     } else {
+      terra::values(S) <- r
+      S
      }
-   }
+   } 
    
    return(r)
 }
