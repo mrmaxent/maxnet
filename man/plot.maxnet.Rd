@@ -7,7 +7,7 @@
 \method{plot}{maxnet}(
   x,
   vars = names(x$samplemeans),
-  common.scale = T,
+  common.scale = TRUE,
   type = c("link", "exponential", "cloglog", "logistic"),
   ylab = NULL,
   plot = TRUE,
@@ -27,7 +27,7 @@
 
 \item{ylab}{character, label for y-axis}
 
-\item{plot}{logical, if TRUE render a plot, if FALSE return a list of 
+\item{plot}{logical, if TRUE render a plot, if FALSE return a list of
 data frames with variable and response columns}
 
 \item{mar}{numeric, 4 element value for margins (lines, in order of bottom, left, top, right)
@@ -38,8 +38,8 @@ See \code{par} for details.}
 \item{...}{other arguments passed to \code{plot} or \code{barplot}}
 }
 \value{
-if \code{plot} is \code{FALSE} then return a list of data frames 
-  that contain variable and response columns otherwise \code{NULL} invisibly
+if \code{plot} is \code{FALSE} then return a list of data frames
+that contain variable and response columns otherwise \code{NULL} invisibly
 }
 \description{
 Create response plots for user selected predictors in a maxnet model

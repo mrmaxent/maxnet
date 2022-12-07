@@ -17,7 +17,7 @@
 #'   that contain variable and response columns otherwise \code{NULL} invisibly
 plot.maxnet <-
 function(x, vars=names(x$samplemeans), 
-         common.scale=T, 
+         common.scale=TRUE, 
          type=c("link","exponential","cloglog","logistic"), 
          ylab=NULL, 
          plot = TRUE,

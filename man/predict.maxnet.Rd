@@ -21,19 +21,19 @@ matrix, data.frame, \code{SpatRaster} or \code{stars} object}
 
 \item{clamp}{logical, f true, predictors and features are restricted to the range seen during model training.}
 
-\item{type}{character, type of response required. Using \code{lp} for the linear predictor 
-and \code{entropy} for the entropy of the exponential model over the background data, 
+\item{type}{character, type of response required. Using \code{lp} for the linear predictor
+and \code{entropy} for the entropy of the exponential model over the background data,
 the values returned are determined by the value of \code{type}.
 \itemize{
-  \item{"link"}{yields \code{lp}}
-  \item{"exponential"}{yields \code{exp(lp)}}
-  \item{"cloglog"}{yields \code{1-exp(-exp(entropy+lp))}}
-  \item{"logistic"}{yields \code{1/(1+exp(-entropy-lp))}}
+\item{"link"}{yields \code{lp}}
+\item{"exponential"}{yields \code{exp(lp)}}
+\item{"cloglog"}{yields \code{1-exp(-exp(entropy+lp))}}
+\item{"logistic"}{yields \code{1/(1+exp(-entropy-lp))}}
 }}
 
-\item{incompletes}{character, one of "ignore" or "fill".  If "fill" then predictions values for 
-incomplete rows in \code{newdata} are filled with \code{NA}. If "ignore" then then predictions values for 
-incomplete rows in \code{newdata} are silently dropped. Always assumed to be 
+\item{incompletes}{character, one of "ignore" or "fill".  If "fill" then predictions values for
+incomplete rows in \code{newdata} are filled with \code{NA}. If "ignore" then then predictions values for
+incomplete rows in \code{newdata} are silently dropped. Always assumed to be
 "fill" if \code{newdata} is a \code{SpatRaster} or \code{stars} object.}
 
 \item{...}{not used}

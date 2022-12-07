@@ -1,3 +1,4 @@
+#' @rdname maxnet
 #' @export
 maxnet.default.regularization <-
 function(p, m)

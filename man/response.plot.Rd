@@ -46,8 +46,8 @@ then compute the response and return a data.frame}
 \item{...}{other argument passed to plot or barplot}
 }
 \value{
-if \code{plot} is \code{FALSE} a data frame 
-  that contains variable and response columns otherwise \code{NULL} invisibly
+if \code{plot} is \code{FALSE} a data frame
+that contains variable and response columns otherwise \code{NULL} invisibly
 }
 \description{
 Compute and plot a single response variable
