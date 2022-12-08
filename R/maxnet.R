@@ -59,6 +59,8 @@ function(p, data, f=maxnet.formula(p, data), regmult=1.0,
          regfun=maxnet.default.regularization, addsamplestobackground=T, ...)
 {
    if (anyNA(data)) stop("NA values in data table. Please remove them and rerun.")
+   if (!is.vector(p))
+       stop("p must be a vector.")
    if (addsamplestobackground) {
        pdata <- data[p==1, , drop = FALSE]
        ndata <- data[p==0, , drop = FALSE]
