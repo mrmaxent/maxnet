@@ -19,69 +19,60 @@
 #' @param ... not used
 #' @return vector with predicted values (one per input row), \code{SpatRaster} or \code{stars} object of predicted values
 predict.maxnet <-
-function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logistic"), ...)
-{
-  
-   na_action <- options("na.action")[[1]]
-   on.exit(options(na.action = na_action))
-   options(na.action = "na.pass")
-   
-   is_stars <- inherits(newdata, "stars")
-   if (is_stars && !requireNamespace("stars", quietly = TRUE)) {
-     stop("package stars required, please install it first")
-   }
-   is_spatraster <- inherits(newdata, "SpatRaster")
-   if (is_spatraster && !requireNamespace("terra", quietly = TRUE)) {
-     stop("package terra required, please install it first")
-   }
-   
-   is_raster <- is_stars || is_spatraster
-   
-   if (is_raster){
-     S <- if(is_stars){
-       newdata[1]
-     } else {
-       newdata[[1]]
-     }
-     names(S) <- "pred"
-     
-     newdata <- if (is_stars){
-       as.data.frame(newdata)[, -c(1,2)]
-     } else {
-       as.data.frame(newdata, na.rm = FALSE)
-     }
-     
-   }
-   
-   if (clamp) {
-      for (v in intersect(names(object$varmax), names(newdata))) {
-         newdata[,v] <- pmin(pmax(newdata[,v], object$varmin[v]), object$varmax[v])
+  function(object, newdata, clamp=T, type=c("link","exponential","cloglog","logistic"), ...)
+  {
+    
+    na_action <- options("na.action")[[1]]
+    on.exit(options(na.action = na_action))
+    options(na.action = "na.pass")
+    
+    newdataframe <- newdata
+    if (is_stars <- inherits(newdata, "stars")) {
+      if (!requireNamespace("stars", quietly = TRUE)) {
+        stop("package stars required, please install it first")
       }
-   }
-   terms <- sub("hinge\\((.*)\\):(.*):(.*)$", "hingeval(\\1,\\2,\\3)", names(object$betas))
-   terms <- sub("categorical\\((.*)\\):(.*)$", "categoricalval(\\1,\"\\2\")", terms)
-   terms <- sub("thresholds\\((.*)\\):(.*)$", "thresholdval(\\1,\\2)", terms)
-   f <- formula(paste("~", paste(terms, collapse=" + "), "-1"))
-   mm <- model.matrix(f, data.frame(newdata))
-   if (clamp) mm <- t(pmin(pmax(t(mm), object$featuremins[names(object$betas)]), 
-                 object$featuremaxs[names(object$betas)]))
-   link <- (mm %*% object$betas) + object$alpha
-   type <- match.arg(type)
-   r <- switch(tolower(type[1]),
-     "exponential" = exp(link),
-     "cloglog" = 1-exp(0-exp(object$entropy+link)),
-     "logistic"= 1/(1+exp(-object$entropy-link)),
-     link)
-
-   if (is_raster){
-     r <- if(is_stars){
+      newdataframe <- as.data.frame(newdata)[, -c(1,2)]
+    }
+    if (is_spatraster <- inherits(newdata, "SpatRaster")) {
+      if (!requireNamespace("terra", quietly = TRUE)) {
+        stop("package terra required, please install it first")
+      }
+      newdataframe <- as.data.frame(newdata, na.rm = FALSE)
+    }
+    
+    
+    if (clamp) {
+      for (v in intersect(names(object$varmax), names(newdataframe))) {
+        newdataframe[,v] <- pmin(pmax(newdataframe[,v], object$varmin[v]), object$varmax[v])
+      }
+    }
+    terms <- sub("hinge\\((.*)\\):(.*):(.*)$", "hingeval(\\1,\\2,\\3)", names(object$betas))
+    terms <- sub("categorical\\((.*)\\):(.*)$", "categoricalval(\\1,\"\\2\")", terms)
+    terms <- sub("thresholds\\((.*)\\):(.*)$", "thresholdval(\\1,\\2)", terms)
+    f <- formula(paste("~", paste(terms, collapse=" + "), "-1"))
+    mm <- model.matrix(f, data.frame(newdataframe))
+    if (clamp) mm <- t(pmin(pmax(t(mm), object$featuremins[names(object$betas)]), 
+                            object$featuremaxs[names(object$betas)]))
+    link <- (mm %*% object$betas) + object$alpha
+    type <- match.arg(type)
+    r <- switch(tolower(type[1]),
+                "exponential" = exp(link),
+                "cloglog" = 1-exp(0-exp(object$entropy+link)),
+                "logistic"= 1/(1+exp(-object$entropy-link)),
+                link)
+    
+    if (is_stars){
+      S <- newdata[1]
       S$pred <- r
-      S
-     } else {
+      names(S) <- "pred"
+      return(S)
+    } 
+    if (is_spatraster){
+      S <- newdata[[1]]
       terra::values(S) <- r
-      S
-     }
-   } 
-   
-   return(r)
+      names(S) <- "pred"
+      return(S)
+   }
+
+return(r)
 }
