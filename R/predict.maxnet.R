@@ -63,8 +63,8 @@ predict.maxnet <-
     
     if (is_stars){
       S <- newdata[1]
-      S$pred <- r
       names(S) <- "pred"
+      S$pred <- r
       return(S)
     } 
     if (is_spatraster){
