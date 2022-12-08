@@ -1,5 +1,59 @@
-#' @import stats
+#' Maxent over glmnet
+#'
+#' @description Maxent species distribution modeling using glmnet for model
+#'   fitting
+#'
+#'   Using \code{lp} for the linear predictor and \code{entropy} for the entropy
+#'   of the exponential model over the background data, the values plotted on
+#'   the y-axis are:
+#'
+#'   \itemize{ \item{\code{lp} if \code{type} is "link"}
+#'
+#'   \item{\code{exp(lp)} if \code{type} is "exponential"}
+#'
+#'   \item{\code{1-exp(-exp(entropy+lp))} if \code{type} is "cloglog"}
+#'
+#'   \item{\code{1/(1+exp(-entropy-lp))} if \code{type} is "logistic"} }
+#'
 #' @export
+#' @param p numeric, a vector of 1 (for presence) or 0 (for background)
+#' @param data a matrix or data frame of predictor variables
+#' @param f formula, determines the features to be used
+#' @param regmult numeric, a constant to adjust regularization
+#' @param regfun function, computes regularization constant for each feature
+#' @param addsamplestobackground logical, if TRUE then add to the background any
+#'   presence sample that is not already there
+#' @param m a matrix of feature values
+#' @param classes charcater, continuous feature classes desired, either
+#'   "default" or any subset of "lqpht" (for example, "lh")
+#' @param ... not used
+#'
+#' @return Maxnet returns an object of class \code{maxnet}, which is a list
+#'   consisting of a glmnet model with the following elements added:
+#'\describe{
+#'  \item{betas}{ nonzero coefficients of the fitted model }
+#'  \item{alpha}{ constant offset making the exponential model sum to one over the background data }
+#'  \item{entropy}{ entropy of the exponential model }
+#'  \item{penalty.factor}{ the regularization constants used for each feature }
+#'  \item{featuremins}{ minimum of each feature, to be used for clamping }
+#'  \item{featuremaxs}{ maximum of each feature, to be used for clamping }
+#'  \item{varmin}{ minimum of each predictor, to be used for clamping }
+#'  \item{varmax}{ maximum of each predictor, to be used for clamping }
+#'  \item{samplemeans}{ mean of each predictor over samples (majority for factors) }
+#'  \item{levels}{ levels of each predictor that is a factor }
+#'}
+#' @author Steve Phillips
+#' @examples
+#' \dontrun{
+#'   library(maxnet)
+#'   data(bradypus)
+#'   p <- bradypus$presence
+#'   data <- bradypus[,-1]
+#'   mod <- maxnet(p, data)
+#'   plot(mod, type="cloglog")
+#'   mod <- maxnet(p, data, maxnet.formula(p, data, classes="lq"))
+#'   plot(mod, "tmp6190_ann")
+#' }
 maxnet <-
 function(p, data, f=maxnet.formula(p, data), regmult=1.0, 
          regfun=maxnet.default.regularization, addsamplestobackground=T, ...)

@@ -1,3 +1,4 @@
+#' @rdname hinge
 #' @export
 categorical <-
 function(x)

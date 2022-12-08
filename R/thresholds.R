@@ -1,3 +1,4 @@
+#' @rdname hinge
 #' @export
 thresholds <-
 function(x, nknots=50)

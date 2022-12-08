@@ -1,3 +1,4 @@
+#' @rdname maxnet
 #' @export
 maxnet.formula <-
 function(p, data, classes="default")
