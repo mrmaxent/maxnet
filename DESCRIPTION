@@ -8,7 +8,8 @@ Maintainer: Steven Phillips <mrmaxent@gmail.com>
 Imports:
     utils,
     stats,
-    glmnet
+    glmnet,
+    dplyr
 Suggests:
     stars,
     terra
