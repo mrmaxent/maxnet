@@ -65,9 +65,9 @@ function(p, data, f=maxnet.formula(p, data), regmult=1.0,
        pdata <- data[p==1, , drop = FALSE]
        ndata <- data[p==0, , drop = FALSE]
        # add to the background any presence data that isn't already in the background
-       toadd <- apply(pdata, 1, function(rr) !any(apply(ndata, 1, function(r) identical(r, rr))))
-       p <- c(p, rep(0, sum(toadd)))
-       data <- rbind(data, pdata[toadd, , drop = FALSE])
+       toadd <- dplyr::setdiff(pdata, ndata)
+       p <- c(p, rep(0, nrow(toadd)))
+       data <- rbind(data, toadd)
    }   
    mm <- model.matrix(f, data)
    reg <- regfun(p,mm) * regmult
