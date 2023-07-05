@@ -31,19 +31,18 @@ predict.maxnet <-
       if (!requireNamespace("stars", quietly = TRUE)) {
         stop("package stars required, please install it first")
       }
-      newdataframe <- as.data.frame(newdata)[, -c(1,2)]
+      newdataframe <- as.data.frame(newdata)[, -c(1,2), drop = FALSE]
     }
     if (is_spatraster <- inherits(newdata, "SpatRaster")) {
       if (!requireNamespace("terra", quietly = TRUE)) {
         stop("package terra required, please install it first")
       }
-      newdataframe <- as.data.frame(newdata, na.rm = FALSE)
+      newdataframe <- as.data.frame(newdata, na.rm = FALSE, drop = FALSE)
     }
-    
-    
+
     if (clamp) {
       for (v in intersect(names(object$varmax), names(newdataframe))) {
-        newdataframe[,v] <- pmin(pmax(newdataframe[,v], object$varmin[v]), object$varmax[v])
+        newdataframe[,v] <- pmin(pmax(newdataframe[,v, drop = TRUE], object$varmin[v]), object$varmax[v])
       }
     }
     terms <- sub("hinge\\((.*)\\):(.*):(.*)$", "hingeval(\\1,\\2,\\3)", names(object$betas))
